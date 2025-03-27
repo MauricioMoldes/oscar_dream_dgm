@@ -1,0 +1,109 @@
+CREATE TABLE PERSON (
+    person_id INT PRIMARY KEY,
+    gender VARCHAR(10),
+    birth_year INT,
+    race VARCHAR(255),
+    care_site_id INT
+);
+
+CREATE TABLE CONDITION_OCCURRENCE (
+    condition_occurrence_id INT PRIMARY KEY,
+    person_id INT,
+    condition_concept_id INT,
+    condition_start_date DATE,
+    condition_end_date DATE,
+    condition_type_concept_id INT,
+    stop_reason VARCHAR(255),
+    FOREIGN KEY (person_id) REFERENCES PERSON(person_id)
+);
+
+CREATE TABLE CARE_SITE (
+    care_site_id INT PRIMARY KEY,
+    care_site_name VARCHAR(255),
+    place_of_service VARCHAR(255),
+    location_id INT
+);
+
+CREATE TABLE PROCEDURE_OCCURRENCE (
+    procedure_occurrence_id INT PRIMARY KEY,
+    person_id INT,
+    procedure_concept_id INT,
+    procedure_date DATE,
+    procedure_type_concept_id INT,
+    FOREIGN KEY (person_id) REFERENCES PERSON(person_id)
+);
+
+CREATE TABLE SPECIMEN (
+    specimen_id INT PRIMARY KEY,
+    person_id INT,
+    procedure_occurrence_id INT,
+    specimen_concept_id INT,
+    specimen_date DATE,
+    anatomic_site INT,
+    disease_status INT,
+    FOREIGN KEY (person_id) REFERENCES PERSON(person_id),
+    FOREIGN KEY (procedure_occurrence_id) REFERENCES PROCEDURE_OCCURRENCE(procedure_occurrence_id)
+);
+
+CREATE TABLE GENOMIC_TEST (
+    genomic_test_id INT PRIMARY KEY,
+    care_site_id INT,
+    genomic_test_name VARCHAR(255),
+    genomic_test_version VARCHAR(50),
+    reference_genome VARCHAR(50),
+    sequencing_device VARCHAR(50),
+    target_capture VARCHAR(50),
+    read_type VARCHAR(50),
+    read_length INT,
+    alignment_tools VARCHAR(50),
+    variant_calling_tools VARCHAR(255),
+    chromosome_coordinate VARCHAR(50),
+    annotation_tools VARCHAR(255),
+    annotation_databases TEXT,
+    FOREIGN KEY (care_site_id) REFERENCES CARE_SITE(care_site_id)
+);
+
+CREATE TABLE TARGET_GENE (
+    target_gene_id INT PRIMARY KEY,
+    genomic_test_id INT,
+    hgnc_id VARCHAR(50),
+    chromosome VARCHAR(5),
+    start_position INT,
+    end_position INT,
+    FOREIGN KEY (genomic_test_id) REFERENCES GENOMIC_TEST(genomic_test_id)
+);
+
+CREATE TABLE VARIANT_OCCURRENCE (
+    variant_occurrence_id INT PRIMARY KEY,
+    procedure_occurrence_id INT,
+    specimen_id INT,    
+    reference_specimen_id INT,
+    target_gene_id INT,
+    reference_sequence VARCHAR(50),
+    rs_id VARCHAR(50),       
+    hgvs_c VARCHAR(255),
+    hgvs_p VARCHAR(255),
+    variant_read_depth INT,
+    total_read_depth INT,
+    variant_exon_number INT,
+    sequence_alteration VARCHAR(50),
+    variant_feature VARCHAR(50),
+    FOREIGN KEY (procedure_occurrence_id) REFERENCES PROCEDURE_OCCURRENCE(procedure_occurrence_id),
+    FOREIGN KEY (specimen_id) REFERENCES SPECIMEN(specimen_id),
+    FOREIGN KEY (target_gene_id) REFERENCES TARGET_GENE(target_gene_id)    
+);
+
+CREATE TABLE VARIANT_ANNOTATION (
+    variant_annotation_id INT PRIMARY KEY,
+    variant_occurrence_id INT,
+    annotation_database VARCHAR(255),
+    variant_origin VARCHAR(50),
+    variant_pathogenicity VARCHAR(50),
+    variant_class_level VARCHAR(50),
+    variant_tier_level VARCHAR(50),
+    allele_frequency FLOAT,
+    medication VARCHAR(255),
+    clinical_trial_information VARCHAR(255),
+    FOREIGN KEY (variant_occurrence_id) REFERENCES VARIANT_OCCURRENCE(variant_occurrence_id)
+);
+
