@@ -1,15 +1,15 @@
-# Oscar Dream DGM
+# OSCAR-DGM
 
-**Oscar Dream DGM** is part of the Danish **OSCAR** initiative, developing tools and pipelines for the **Department of Genomic Medicine (DGM)**.  
-The project focuses on making clinical and genomic data interoperable and reusable through standardized data models and open-source methods.
+This repository contains the **Department of Genomic Medicine (DGM)** contribution to the Danish **OSCAR** initiative.  
+It provides tools and pipelines for integrating clinical and genomic data into OSCAR’s interoperable framework.
 
 ---
 
-## Overview
+## Purpose
 
-- Mapping hospital data to the **OMOP Common Data Model (CDM)**
-- Coordinating interoperability with the **National Genome Center** and **regional partners**
-- Building shared services for **clinical research and data reuse**
+- Transform and map hospital data to the **OMOP Common Data Model (CDM)**  
+- Enable interoperability with the **National Genome Center** and regional partners  
+- Support shared services for **clinical research and data reuse**
 
 ---
 
@@ -23,5 +23,4 @@ The project focuses on making clinical and genomic data interoperable and reusab
 ## License
 
 MIT © Mauricio Moldes  
-Rigshospitalet / Copenhagen University Hospital
-
+Rigshospitalet 
